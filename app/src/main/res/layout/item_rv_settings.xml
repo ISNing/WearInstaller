@@ -7,9 +7,9 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center|start"
     android:orientation="horizontal"
-    android:padding="12dp">
+    android:padding="2dp">
 
-    <com.tokyonth.installer.view.BurnRoundView
+    <io.isning.installer.wear.view.BurnRoundView
         android:id="@+id/settings_item_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -42,7 +42,7 @@
 
     </LinearLayout>
 
-    <com.tokyonth.installer.view.SwitchButton
+    <io.isning.installer.wear.view.SwitchButton
         android:id="@+id/settings_item_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

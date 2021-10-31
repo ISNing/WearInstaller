@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">APK安装器</string>
+    <string name="app_name">Wear安装器</string>
     <string name="installing">安装中…</string>
     <string name="install">安装</string>
     <string name="settings">设置</string>
@@ -29,8 +29,6 @@
     <string name="apk_activity">活动组件 : (%s)</string>
     <string name="title_show_activity">活动组件</string>
     <string name="summary_show_activity">显示Activity列表</string>
-    <string name="text_input_sys_pkg">点击输入系统打包安装程序的包名</string>
-    <string name="text_sys_pkg_tips">当安装器无法调用系统自带安装程序时启用</string>
     <string name="text_install_complete">完成</string>
     <string name="dialog_btn_cancel">取消</string>
     <string name="dialog_btn_ok">确定</string>
@@ -42,7 +40,6 @@
     <string name="apk_new_version">新版本</string>
     <string name="apk_equal_version">相同版本</string>
     <string name="no_permissions">没有权限!</string>
-    <string name="use_system_pkg">安装失败，是否使用系统打包安装程序进行安装？</string>
     <string name="text_hint_input_pkg">请输入包名</string>
     <string name="text_title_input">输入</string>
     <string name="text_input_empty">输入内容为空</string>
@@ -52,24 +49,13 @@
     <string name="text_apk_cache">APK安装包缓存大小:%s\n点击清理</string>
     <string name="clean_complete">清理完成</string>
     <string name="text_cancel_installation">取消安装</string>
-    <string name="text_settings_version">Version : %s</string>
-    <string name="text_settings_author">Author : TOKYONTH</string>
-    <string name="text_settings_pkg">com.android.packageinstaller</string>
+    <string name="text_settings_version">Version: %s</string>
+    <string name="text_settings_author">Author: ISNing</string>
     <string name="text_no_description">无对应描述</string>
     <string name="text_uninstall">卸载 - %s 模式</string>
     <string name="text_confirm_uninstall_app">确定要卸载 %s 吗？</string>
     <string name="text_uninstall_complete">%s 卸载完成!</string>
     <string name="text_uninstall_failure">卸载失败!</string>
-    <string name="shizuku_permission_request">请给予本软件 Shizuku 权限</string>
-    <string name="shizuku_not_installed">未安装Shizuku！</string>
-    <string name="shizuku_lowest_api">系统SDK小于等于23无法使用Shizuku</string>
-    <string name="icebox_permission_request">请给予本软件 IceBox 权限</string>
-    <string name="not_install_icebox">未安装冰箱</string>
-    <string name="not_support_icebox_version">冰箱版本过低</string>
-    <string name="not_support_icebox_system">当前系统版本不支持静默安装</string>
-    <string name="not_icebox_owner">冰箱不是设备管理员</string>
-    <string name="not_icebox_perm">未取得权限冰箱权限</string>
-    <string name="icebox_not_running">冰箱没有运行</string>
     <string name="follow_system_night_mode">自动暗色</string>
     <string name="follow_system_night_mode_sub">跟随系统夜间模式</string>
     <string name="install_mode">安装模式</string>
@@ -87,9 +73,4 @@
     <string name="error_details">错误日志</string>
     <string name="error_details_copy">复制日志</string>
     <string name="copy_error_log">已复制到剪切板</string>
-    <array name="install_mode_arr">
-        <item>Shell</item>
-        <item>Shizuku</item>
-        <item>IceBox</item>
-    </array>
 </resources>

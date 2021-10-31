@@ -1,17 +1,10 @@
-# ApkInstaller
+# WearInstaller
 
-### APK安装器
+### Specially designed for Wearable devices with android system (including Wear OS by Google and other systems with adb available based on AOSP)
 
-- APK安装卸载
-- 路径显示 源文件删除 夜间模式
-- APK权限与Activity显示
-- 兼容Android10 Android11
-- 支持apks，xapk安装
-- 支持shizuku icebox
-- ...
+- Support for installing packages by adb
+- Allow to install packages from private folder(e.g. "/data/data/..." or "/Android/data/...")
 
-## 截图
-
-|  ![ApkInstaller](screenshot/1.jpg)  | ![ApkInstaller](screenshot/2.jpg)  |  ![ApkInstaller](screenshot/3.jpg)  |
-| :----: | :----: | :----: |
-| ![ApkInstaller](screenshot/4.jpg) | ![ApkInstaller](screenshot/5.png) |  |
+## Special Thanks
+- This project is developed based on [ApkInstaller](https://github.com/Tokyonth/ApkInstaller)
+- Used [AdbLib](https://github.com/tananaev/AdbLib) for Android Debug Bridge implementation in Java

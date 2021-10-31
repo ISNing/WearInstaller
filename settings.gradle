@@ -1,1 +1,1 @@
-include ':app', ':icebox'
+include ':app'

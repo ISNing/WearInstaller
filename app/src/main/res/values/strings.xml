@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">APK Installer</string>
+    <string name="app_name">WearInstaller</string>
     <string name="installing">Installing…</string>
     <string name="install">Install</string>
     <string name="parse_apk_failed">Cannot parse apk file :%s</string>
@@ -35,9 +35,6 @@
     <string name="text_install_complete">Complete</string>
     <string name="clean_complete">Clean complete</string>
     <string name="no_permissions">No Permissions</string>
-    <string name="use_system_pkg">Installation failed. Do you want to use the system package installer to install?</string>
-    <string name="text_input_sys_pkg">Click to enter the package name of the system package installer</string>
-    <string name="text_sys_pkg_tips">Enable when the installer cannot call the system own installer</string>
     <string name="text_hint_input_pkg">Please enter package name</string>
     <string name="text_title_input">Input</string>
     <string name="text_input_empty">Input content is empty</string>
@@ -52,28 +49,17 @@
     <string name="text_apk_source_more">Click to view details</string>
     <string name="text_apk_cache">APK Installation package cache size:%s\nClick please</string>
     <string name="text_cancel_installation">Cancel</string>
-    <string name="text_settings_version">Version : %S</string>
-    <string name="text_settings_author">Author : TOKYONTH</string>
-    <string name="text_settings_pkg">com.android.packageinstaller</string>
+    <string name="text_settings_version">Version: %S</string>
+    <string name="text_settings_author">Author: ISNing</string>
     <string name="text_no_description">No corresponding description</string>
     <string name="text_uninstall">Uninstall - %s Mode</string>
     <string name="text_confirm_uninstall_app">Are you sure you want to uninstall %s?</string>
     <string name="text_uninstall_complete">%s Uninstall complete!</string>
     <string name="text_uninstall_failure">Uninstall failed!</string>
-    <string name="shizuku_permission_request">Please give Shizuku permission to this software</string>
-    <string name="shizuku_lowest_api">System SDK less than or equal to 23 not available Shizuku</string>
-    <string name="icebox_permission_request">Please give IceBox permission to this software</string>
-    <string name="not_install_icebox">No IceBox Installed</string>
-    <string name="not_support_icebox_version">IceBox version too low</string>
-    <string name="not_support_icebox_system">The current system version does not support silent installation</string>
-    <string name="not_icebox_owner">IceBox not device owner</string>
-    <string name="not_icebox_perm">IceBox permission not obtained</string>
-    <string name="icebox_not_running">IceBox not running</string>
     <string name="follow_system_night_mode">Auto dark</string>
     <string name="follow_system_night_mode_sub">Follow the system night mode</string>
     <string name="install_mode">Installation mode</string>
     <string name="install_mode_sub">Choose installation mode</string>
-    <string name="shizuku_not_installed">Not Installed Shizuku！</string>
     <string name="exit_app">Exit</string>
     <string name="cannot_found_pkg">Failed to get the package name</string>
     <string name="default_silent">Silent by default</string>
@@ -87,9 +73,4 @@
     <string name="use_app_warn">Software operation requires storage read and write permissions, Android11 additionally requires access to all files and Android/data access permissions,
          Please give permission. If the installation fails, please try to close the GooglePlay security scan, customize the systems USB ADB installation monitoring, etc. At the same time, it is strongly not recommended that you uninstall or disable the system installer, which is very dangerous.</string>
     <string name="open_sys_pkg_failure">Open failed! Try to customize the package name in the settings</string>
-    <array name="install_mode_arr">
-        <item>Shell</item>
-        <item>Shizuku</item>
-        <item>IceBox</item>
-    </array>
 </resources>

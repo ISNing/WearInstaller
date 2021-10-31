@@ -7,11 +7,11 @@ plugins {
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.tokyonth.installer"
-        minSdkVersion 21
+        applicationId "io.isning.installer.wear"
+        minSdkVersion 23
         targetSdkVersion 30
-        versionCode 40
-        versionName "3.5"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,18 +29,22 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility "1.8"
+        targetCompatibility "1.8"
     }
 
     buildFeatures {
         viewBinding true
     }
+
+    packagingOptions {
+        exclude 'classes.dex'
+        exclude '**.**'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":icebox")
 
     implementation "androidx.core:core-ktx:1.3.2"
     implementation 'androidx.appcompat:appcompat:1.3.0'
@@ -49,9 +53,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "dev.rikka.shizuku:api:11.0.3"
-    implementation "dev.rikka.shizuku:provider:11.0.3"
     implementation 'me.weishu:free_reflection:3.0.1'
+    implementation 'com.tananaev:adblib:1.3'
+    implementation 'androidx.wear:wear:1.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.3.0'
