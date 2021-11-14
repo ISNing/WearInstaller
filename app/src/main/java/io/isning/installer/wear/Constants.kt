@@ -13,7 +13,7 @@ object Constants {
     const val DEFAULT_SYS_PKG_NAME = "com.android.packageinstaller"
     const val PROVIDER_STR = "$PKG_NAME.FileProvider"
     const val SE_LINUX_COMMAND = "setenforce permissive"
-    const val INSTALL_COMMAND = "pm install -r -d --user 0 -i $PKG_NAME "
+    const val INSTALL_COMMAND = "pm install -r -d --user 0 -i $PKG_NAME %s"
     const val COPY_COMMAND = "cp %s %s"
     const val UNINSTALL_COMMAND = "pm uninstall "
     const val ANDROID_DATA_STR = "Android/data"

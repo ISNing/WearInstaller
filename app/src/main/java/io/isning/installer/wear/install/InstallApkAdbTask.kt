@@ -15,10 +15,10 @@ import io.isning.installer.wear.utils.path.ParsingContentUtil
 import java.io.File
 import java.io.IOException
 import java.net.Socket
+import java.util.*
 
 class InstallApkAdbTask constructor(private val apkInfoEntity: ApkInfoEntity,
                                     private val installCallback: InstallCallback) {
-
     fun start() {
         installCallback.onApkPreInstall()
         doAsync {
@@ -28,21 +28,6 @@ class InstallApkAdbTask constructor(private val apkInfoEntity: ApkInfoEntity,
                 val tgtFilePath = Constants.DATA_LOCAL_TMP_STR + "/" + Constants.TMP_PACKAGE_FILE_NAME
                 val fromFile = ParsingContentUtil(apkInfoEntity.uriReferrer).getFile(App.context, apkInfoEntity.fileUri)
                 val transFile = File(transFilePath)
-
-                onUI {
-                    installCallback.onInstallLog("Copying File $curFilePath to $transFilePath for transferring\n")
-                }
-                try {
-                    FileIOUtils.copyFile(fromFile, transFile, true)
-                }catch (ex: Exception) {
-                    onUI {
-                        installCallback.onInstallLog("File copy failed\n\n")
-                        throw ex
-                    }
-                }
-                onUI {
-                    installCallback.onInstallLog("File copied\n\n")
-                }
 
                 onUI {
                     installCallback.onInstallLog("Connecting to device\n")
@@ -60,59 +45,116 @@ class InstallApkAdbTask constructor(private val apkInfoEntity: ApkInfoEntity,
                 }
 
                 onUI {
-                    installCallback.onInstallLog("Copying File $transFilePath to $tgtFilePath\n")
+                    installCallback.onInstallLog("Copying File $curFilePath to $tgtFilePath\n")
                 }
 
-                var stream: AdbStream
-                stream = connection.open("shell:" + Constants.COPY_COMMAND.format(transFilePath, tgtFilePath))
-
-                while (!stream.isClosed) {
-                    val str: String = try{
-                        String(stream.read())
-                    } catch (ignored: IOException){
-                        ""
-                    }
-                    for (line in str.split("\\r?\\n").toTypedArray()) {
-                        if (line.isNotEmpty()) {
-                            onUI {
-                                installCallback.onInstallLog(line + "\n")
-                            }
+                copyFileAdb(connection, curFilePath, tgtFilePath, object: TaskCallback {
+                    override fun onSuccess() {
+                        onUI {
+                            installCallback.onInstallLog("File copied\n\n")
                         }
                     }
-                }
-                onUI {
-                    installCallback.onInstallLog("File copied\n\n")
-                }
+                    override fun onFailure() {
+                        // The adb environment might has no permission to access to /data/ or some other dictionaries.
+                        // So, we copy the file waiting to be installed to the root of internal storage,
+                        // then use adb to copy the transfer file(which is located in internal storage) to /data/tmp to install it.
+                        // (Why /data/tmp? Because it is not permitted to install file in the internal storage.
+                        // If you do, you will get only "EACCESS")
 
-                transFile.delete()
+                        // Copy source file to transfer file
+                        onUI {
+                            installCallback.onInstallLog("File copy failed, trying to deal with this by transferring file to $transFilePath\n\n")
+                            installCallback.onInstallLog("Copying File $curFilePath to $transFilePath for transferring\n")
+                        }
+                        copyFileAndroid(fromFile, transFile, object : TaskCallback{
+                            override fun onSuccess() {
+                                onUI {
+                                    installCallback.onInstallLog("File copied\n\n")
+                                }
+                            }
 
-                onUI {
-                    installCallback.onInstallLog("Deleted trans file $transFilePath\n\n")
-                }
+                            override fun onFailure() {
+                                onUI {
+                                    installCallback.onInstallLog("File copy failed, check logs before for details\n\n")
+                                    installCallback.onApkInstalled(InstallStatus.FAILURE)
+                                }
+                            }
+
+                            override fun onFailure(e: Exception) {
+                                onUI {
+                                    installCallback.onInstallLog("File copy failed, throwing exception\n\n")
+                                    throw e
+                                }
+                            }
+                        })
+
+                        // Copy transfer file to target file
+                        onUI {
+                            installCallback.onInstallLog("Copying File $transFilePath to $tgtFilePath\n\n")
+                        }
+                        copyFileAdb(connection, transFilePath, tgtFilePath, object : TaskCallback{
+                            override fun onSuccess() {
+                                onUI {
+                                    installCallback.onInstallLog("File copied\n\n")
+                                }
+                            }
+
+                            override fun onFailure() {
+                                onUI {
+                                    installCallback.onInstallLog("File copy failed, check logs before for details\n\n")
+                                    installCallback.onApkInstalled(InstallStatus.FAILURE)
+                                }
+                            }
+
+                            override fun onFailure(e: Exception) {
+                                onUI {
+                                    installCallback.onInstallLog("File copy failed, throwing exception\n\n")
+                                    throw e
+                                }
+                            }
+
+                        })
+
+                        // Delete transfer file
+                        onUI {
+                            installCallback.onInstallLog("Deleting trans file $transFilePath\n")
+                        }
+                        transFile.delete()
+                        onUI {
+                            installCallback.onInstallLog("Deleted trans file $transFilePath\n\n")
+                        }
+                    }
+                    override fun onFailure(e: Exception) {
+
+                    }
+                })
+
 
                 onUI {
                     installCallback.onInstallLog("Start installing $tgtFilePath\n\n")
                 }
-
-                stream = connection.open("shell:" + Constants.INSTALL_COMMAND + tgtFilePath)
-
-                while (!stream.isClosed) {
-                    val str: String = try{
-                        String(stream.read())
-                    } catch (ignored: IOException){
-                        ""
-                    }
-                    for (line in str.split("\\r?\\n").toTypedArray()) {
-                        if (line.isNotEmpty()) {
-                            onUI {
-                                installCallback.onInstallLog(line + "\n")
-                            }
+                installApkAdb(connection, tgtFilePath, object : TaskCallback {
+                    override fun onSuccess() {
+                        onUI {
+                            installCallback.onApkInstalled(InstallStatus.SUCCESS)
                         }
                     }
-                }
-                onUI {
-                    installCallback.onApkInstalled(if(CommonUtils.checkAppInstalled(App.context, apkInfoEntity.packageName)) InstallStatus.SUCCESS else InstallStatus.FAILURE)
-                }
+
+                    override fun onFailure() {
+                        onUI {
+                            installCallback.onInstallLog("File install failed, check logs before for details\n\n")
+                            installCallback.onApkInstalled(InstallStatus.FAILURE)
+                        }
+                    }
+
+                    override fun onFailure(e: Exception) {
+                        onUI {
+                            installCallback.onInstallLog("File install failed, throwing exception\n\n")
+                            throw e
+                        }
+                    }
+                })
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 onUI {
@@ -126,5 +168,74 @@ class InstallApkAdbTask constructor(private val apkInfoEntity: ApkInfoEntity,
             }
         }
     }
+    data class ProcessTags(val tag: String=UUID.randomUUID().toString()) {
+        fun getTaggedScript(rawScript: String): String {
+            return  "$rawScript;if [ \$? -eq 0 ];then echo \"\\n${getSuccessTag()}\";else echo \"\\n${getFailureTag()}\";fi;"
+        }
+        fun getSuccessTag(): String{
+            return "< Success $tag >"
+        }
+        fun getFailureTag(): String{
+            return "< Failure $tag >"
+        }
+    }
 
+    private fun startWatchingStream(stream: AdbStream, tags: ProcessTags, cb: TaskCallback) {
+        while (!stream.isClosed) {
+            val str: String = try{
+                String(stream.read())
+            } catch (ignored: IOException){
+                ""
+            }
+            for (line in str.split("\\r?\\n").toTypedArray()) {
+                if (line.isNotEmpty()) {
+                    val s = line.replace("\n","").replace("\r","")
+                    onUI {
+                        installCallback.onInstallLog(s + "\n")
+                    }
+                    if(s == tags.getSuccessTag()) {
+                        stream.close()
+                        cb.onSuccess()
+                    }else if(s == tags.getFailureTag()) {
+                        stream.close()
+                        cb.onFailure()
+                    }
+                }
+            }
+        }
+    }
+
+    fun installApkAdb(connection: AdbConnection, path: String, cb:TaskCallback){
+        try {
+            val tags = ProcessTags()
+            val stream = connection.open("shell:" + tags.getTaggedScript(Constants.INSTALL_COMMAND.format(path)))
+            startWatchingStream(stream, tags, cb)
+        }catch (e: Exception) {
+            cb.onFailure(e)
+        }
+    }
+
+    fun copyFileAdb(connection: AdbConnection, fromPath: String, toPath: String, cb: TaskCallback){
+        try {
+            val tags = ProcessTags()
+            val stream: AdbStream = connection.open("shell:" + tags.getTaggedScript(Constants.COPY_COMMAND.format(fromPath, toPath)))
+            startWatchingStream(stream, tags, cb)
+        }catch (e: Exception) {
+            cb.onFailure(e)
+        }
+    }
+
+    fun copyFileAndroid(from: File, to: File, cb: TaskCallback){
+        try {
+            FileIOUtils.copyFile(from, to, true)
+        }catch (e: Exception) {
+            cb.onFailure(e)
+        }
+    }
+
+    interface TaskCallback {
+        fun onSuccess()
+        fun onFailure()
+        fun onFailure(e: Exception)
+    }
 }
