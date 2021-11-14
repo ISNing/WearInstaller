@@ -59,10 +59,10 @@
         <entry key="..\:/AndroidProject/ApkInstaller/app/src/main/res/layout/layout_perm_info.xml" value="0.483695652173913" />
         <entry key="app/src/main/res/drawable/bg_tips.xml" value="1.375" />
         <entry key="app/src/main/res/layout/activity_crash_error.xml" value="1.2779605263157894" />
-        <entry key="app/src/main/res/layout/activity_installer.xml" value="0.4233983286908078" />
+        <entry key="app/src/main/res/layout/activity_installer.xml" value="0.7007978723404256" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.453804347826087" />
         <entry key="app/src/main/res/layout/activity_uninstall.xml" value="1.2779605263157894" />
-        <entry key="app/src/main/res/layout/item_rv_settings.xml" value="1.2779605263157894" />
+        <entry key="app/src/main/res/layout/item_rv_settings.xml" value="0.8286163522012578" />
         <entry key="app/src/main/res/layout/layout_contract_list.xml" value="1.1200657894736843" />
         <entry key="app/src/main/res/layout/layout_input_pkg.xml" value="1.1200657894736843" />
         <entry key="app/src/main/res/layout/layout_install_top.xml" value="1.2779605263157894" />
